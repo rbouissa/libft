@@ -6,112 +6,95 @@
 /*   By: rbouissa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 18:10:01 by rbouissa          #+#    #+#             */
-/*   Updated: 2022/10/11 14:03:53 by rbouissa         ###   ########.fr       */
+/*   Updated: 2022/10/30 05:03:46 by rbouissa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include<stdio.h>
-char *ft_strcpy(char *src, char *dest)
+#include "libft.h"
+
+static int	count_tab(char const *s, char c)
 {
-	int i;
+	int	i;
+	int	cmpt;
+
+	cmpt = 0;
 	i = 0;
-	while(src[i] !='\0')
+	if (!s || !c)
+		return (-1);
+	while (s[i] != '\0')
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i] != c && s[i])
+			cmpt ++;
+		while (s[i] && s[i] != c)
+			i ++;
+	}
+	return (cmpt);
+}
+
+static int	ft_strnlen(char *src, char c)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] && src[i] != c)
+	{
+		i ++;
+	}
+	return (i);
+}
+
+static char	*ft_cp(char *src, char c)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	dest = (char *) malloc(sizeof(char) *(ft_strnlen(src, c) + 1));
+	if (!dest)
+		return (0);
+	while (src[i] && src[i] != c)
 	{
 		dest[i] = src[i];
 		i ++;
 	}
-	dest[i] = '\0';
-   return (dest);
-}   
-	
-
-
-int ft_lenstr(char *str)
-{
-	int i;
-	while(str[i] != '\0')
-	{
-		i++;
-	}
-	return i;
+	dest[i] = 0;
+	return (dest);
 }
 
-char *ft_strdup(char *s, char c)
+static	void	free_split(char **s, int z)
 {
-	int i;
-	char *dest;
-
-	i  = 0;
-	while( s[i] = c)
-	{
-			i++;
-	}
-		dest = (char *)malloc(sizeof (char) * ft_lenstr(s) + 1);
-		dest = ft_strcpy(s + i,dest);
-		return (dest);
+	while (z >= 0)
+		free(s[z--]);
+	free(s);
+	return ;
 }
-	
-//int count_separator(char const *str, char k)
-//{
-//	int i;
-//	int j;
-//	j = 0;
-//	i = 0;
-//	while(str[i] != '\0')
-//	{
-//		if(str[i] == k)
-//		{
-//			j++;
-//		}
-//		i++;
-//	}
-//	return (j);
-//}
 
-char *ft_results(char const *st , char k)
+char	**ft_split(char const *s, char c)
 {
-	int i;
-	int j;
-	char *half_result;
+	int		i;
+	int		z;
+	char	**split;
 
 	i = 0;
-	j = 0;
-	while(st[i] != '\0')
+	z = 0;
+	split = (char **)malloc(sizeof(char *) * (count_tab(s, c) + 1));
+	if (!split)
+		return (0);
+	while (s[i])
 	{
-		if(st[i] == k)
+		while (s[i] && s[i] == c)
+			i ++;
+		if (s[i] && s[i] != c)
 		{
-			while(i >= 0)
-			{
-				half_result[j] = st[j];
-					j ++;;
-					i --;
-			}
-			
+			split[z] = ft_cp((char *)s + i, c);
+			if (!split[z])
+				free_split(split, z);
+			z ++;
 		}
-		i ++;
+		while (s[i] != c && s[i])
+			i ++;
 	}
-	return (half_result);
-}
-
-char **ft_split(char const *s, char c)
-{
-	char **result;
-	int	i;
-//	int	j;
-	int sep;
-//	sep = count_seperator(s,c);
-	i = 0;
-	result = (char **) malloc(sizeof (char) * 
-
-	while(s[i] !='\0')
-	{
-		*result[i] = ft_strdups,c);
-		i ++;
-	}
-	return (result);
-}
-int main()
-{
-	char *k ="reda yasir oussama simo";
-	char c =" ";
-	printf("%s",ft_split(k ,c));
+	split[z] = NULL;
+	return (split);
 }

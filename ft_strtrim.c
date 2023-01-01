@@ -1,37 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbouissa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/08 19:08:56 by rbouissa          #+#    #+#             */
-/*   Updated: 2022/10/30 05:25:31 by rbouissa         ###   ########.fr       */
+/*   Created: 2022/10/11 17:23:30 by rbouissa          #+#    #+#             */
+/*   Updated: 2022/10/29 22:52:26 by rbouissa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-static char	*ft_strcpy(char *dest, const char *src)
+static int	ft_kayna(char c, char const *o)
 {
 	int	i;
 
 	i = 0;
-	while (src[i] != '\0')
+	while (o[i] != '\0')
 	{
-		dest[i] = src[i];
+		if (c == o[i])
+		{
+			return (1);
+		}
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	return (0);
 }
 
-char	*ft_strdup(const char *src)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*dest;
+	int		lendest;
+	int		i;
+	int		j;
 
-	dest = (char *) malloc((sizeof(char) * ft_strlen(src)) + 1);
-	if (!dest)
+	i = 0;
+	if (!s1 || !set)
 		return (0);
-	dest = ft_strcpy(dest, src);
+	j = ft_strlen(s1);
+	while (s1[i] != '\0' && ft_kayna(s1[i], set))
+		i++;
+	while (j > 0 && ft_kayna(s1[j - 1], set) && i < j)
+		j--;
+	lendest = j - i;
+	if (lendest < 0)
+		lendest = 0;
+	dest = ft_substr(s1, i, lendest);
 	return (dest);
 }

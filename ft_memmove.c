@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbouissa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/09 14:40:42 by rbouissa          #+#    #+#             */
-/*   Updated: 2022/10/27 04:19:56 by rbouissa         ###   ########.fr       */
+/*   Created: 2022/10/13 18:23:57 by rbouissa          #+#    #+#             */
+/*   Updated: 2022/10/27 04:22:06 by rbouissa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_memmove(void *to, const void *from, size_t numBytes)
 {
-	void	*dest;
-	size_t	i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-	i = 0;
-	dest = malloc(count * size);
-	if (!dest)
-		return (0);
-	while (i < count * size)
+	str1 = (unsigned char *)to;
+	str2 = (unsigned char *)from;
+	if (str2 < str1)
 	{
-		((unsigned char *)dest)[i] = 0;
-		i ++;
+		while (numBytes-- > 0)
+			*(str1 + (numBytes)) = *(str2 + (numBytes));
 	}
-	return (dest);
+	else
+	{
+		str1 = ft_memcpy(to, from, numBytes);
+	}
+	return (to);
 }
